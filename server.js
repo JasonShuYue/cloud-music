@@ -2,6 +2,7 @@ var http = require('http')
 var fs = require('fs')
 var url = require('url')
 var port = process.argv[2]
+var qiniu = require('qiniu')
 
 if(!port){
     console.log('请指定端口号好不啦？\nnode server.js 8888 这样不会吗？')
@@ -21,32 +22,38 @@ var server = http.createServer(function(request, response){
 
     console.log('方方说：含查询字符串的路径\n' + pathWithQuery)
 
-    if(path === '/'){
-        var string = fs.readFileSync("./index.html", "utf-8");
+    if(path === '/upload'){
         response.statusCode = 200;
-        response.setHeader('Content-Type', 'text/html;charset=utf-8')
-        response.write(string);
-        response.end();
-    }else if(path === '/main.js') {
-        var string = fs.readFileSync("./main.js", "utf-8");
-        response.statusCode = 200;
-        response.setHeader('Content-Type', 'text/javascript;charset=utf-8')
-        response.write(string);
-        response.end()
-    } else if(path === "/xxx") {
-        response.statusCode = 200;
-        response.setHeader("Content-type", "text/json");
+        response.setHeader('Content-Type', 'text/html;charset=utf-8');
+        response.setHeader("Access-Control-Allow-Origin", "*");
+
+        console.log(1)
+        var config = fs.readFileSync("./qiniu-config.json");
+
+        config = JSON.parse(config);
+
+
+        let { accessKey, secretKey} = config;
+
+
+
+        var mac = new qiniu.auth.digest.Mac(accessKey, secretKey);
+
+
+        var options = {
+            scope: 'cloud-music',
+        };
+        var putPolicy = new qiniu.rs.PutPolicy(options);
+        var uploadToken=putPolicy.uploadToken(mac);
+
+
         response.write(`{
-            "message": {
-                "name": "Jason",
-                "age": 23,
-                "major": "fronted"
-            }
+            "uptoken": "${uploadToken}"
         }`);
         response.end();
     } else{
-        response.statusCode = 404
-        response.setHeader('Content-Type', 'text/html;charset=utf-8')
+        response.statusCode = 404;
+        response.setHeader('Content-Type', 'text/html;charset=utf-8');
         response.write('呜呜呜')
         response.end()
     }
