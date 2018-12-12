@@ -36,7 +36,6 @@ var server = http.createServer(function(request, response){
         let { accessKey, secretKey} = config;
 
 
-
         var mac = new qiniu.auth.digest.Mac(accessKey, secretKey);
 
 

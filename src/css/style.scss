@@ -1,0 +1,89 @@
+
+.admin-wrapper {
+  display: flex;
+  min-height: 100vh;
+  aside {
+    width: 20%;
+    border-right: 1px solid #ddd;
+    display: flex;
+    flex-direction: column;
+    //justify-content: flex-end;
+    .create-song {
+      height: 50px;
+      display:flex;
+      align-items: center;
+      justify-content: center;
+      background: #f4f4f4;
+      border-bottom: 1px solid #a29e9e;
+      &.active {
+        background: #ddd;
+      }
+    }
+    .song-list-container {
+      .song-list {
+        li {
+          text-align: center;
+          padding: 8px;
+          border-bottom: 1px solid #ddd;
+          &.active {
+            background: #dddddd;
+          }
+        }
+      }
+    }
+
+    .uploadArea {
+      flex: 1;
+      display: flex;
+      align-items: flex-end;
+      .upload-container {
+        border: 1px dashed #ddd;
+        border-radius: 10px;
+        cursor: pointer;
+
+        .upload-button {
+          width: 100%;
+          display: inline-block;
+          padding: 25px 20px;
+          border-radius: 5px;
+          text-align: center;
+        }
+      }
+    }
+
+  }
+  main {
+    flex-grow: 1;
+    background: #dddddd;
+    .title {
+      font-size: 30px;
+      font-weight: bold;
+      padding-left: 20px;
+      padding-top: 20px;
+    }
+    .song-form {
+      display: flex;
+      flex-direction: column;
+      label {
+        margin: 20px;
+        input {
+          margin-left: 20px;
+          padding: 5px 8px;
+          border-radius: 5px;
+          border: 1px solid #dddddd;
+        }
+      }
+      .submit-bt {
+        width: 50px;
+        display: inline-block;
+        padding: 5px 8px;
+        border: 1px solid gray;
+        text-align: center;
+        background: white;
+        border-radius: 5px;
+        margin-left: 70px;
+        cursor: pointer;
+      }
+    }
+  }
+}
